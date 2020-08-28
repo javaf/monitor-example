@@ -2,6 +2,26 @@ A monitor is a synchronization approach that allows threads to wait until a cond
 
 The example here defines an empty list (with just an integer) and create 4 producers and 4 consumers that produce/consume 1-4 items at a time. If there are insufficient items for a consumer, it waits until they are available.
 
+```java
+Producer n:
+1. Lock on items
+2. Produce "n" items
+3. Notify all consumers
+4. Unlock on items
+... loop
+(.notifyAll: Unlock + notifyAll + Lock)
+```
+
+```java
+Consumer n:
+1. Lock on items
+2. Wait until atleast "n" items present
+3. Consume "n" items
+4. Unlock on items
+... loop
+(.wait: Unlock + wait + Lock)
+```
+
 See [Main.java] for code, and [repl.it] for output.
 
 [Main.java]: https://repl.it/@wolfram77/monitor-example#Main.java
