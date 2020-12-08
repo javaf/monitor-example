@@ -1,5 +1,3 @@
-import java.util.concurrent.*;
-
 // A monitor is a synchronization approach that
 // allows threads to wait until a condition is
 // satisfied while enforcing mutual exclusion. A
@@ -25,78 +23,81 @@ class Main {
   // N: no. of producers and consumers
   // (items has to be an object for .wait())
 
+
   // Producer n:
   // 1. Lock on items
   // 2. Produce "n" items
   // 3. Notify all consumers
   // 4. Unlock on items
+  // 5. Wait some time.
   // ... loop
   // (.notifyAll: Unlock + notifyAll + Lock)
-  static void produce(int n) throws InterruptedException {
-    String id = "produce"+n;
-    synchronized (items) {
-      log(id+": items="+items[0]);
-      items[0] += n;
-      items.notifyAll();
-      log(id+": new items="+items[0]);
-    }
+  static Thread producer(int n) {
+    String id = "P"+n;
+    return new Thread(() -> {
+      while (true) {
+        synchronized (items) { // 1
+          log(id+": items="+items[0]);
+          items[0] += n;       // 2
+          log(id+": new items="+items[0]);
+          items.notifyAll();   // 3
+        } // 4
+        sleep(); // 5
+      }
+    });
   }
+
 
   // Consumer n:
   // 1. Lock on items
   // 2. Wait until atleast "n" items present
   // 3. Consume "n" items
   // 4. Unlock on items
+  // 5. Wait some time.
   // ... loop
   // (.wait: Unlock + wait + Lock)
-  static void consume(int n) throws InterruptedException {
-    String id = "consume"+n;
-    synchronized (items) {
-      log(id+": items="+items[0]);
-      while(items[0]-n < 0) {
-        log(id+": too few items="+items[0]);
-        items.wait();
+  static Thread consumer(int n) {
+    String id = "C"+n;
+    return new Thread(() -> {
+      try {
+      while (true) {
+        synchronized (items) {    // 1
+          log(id+": items="+items[0]);
+          while(items[0]-n < 0) { // 2
+            log(id+": too few items="+items[0]);
+            items.wait();         // 2
+          }
+          items[0] -= n; // 3
+          log(id+": new items="+items[0]);
+        } // 4
+        sleep(); // 5
       }
-      items[0] -= n;
-      log(id+": new items="+items[0]);
-    }
+      }
+      catch (InterruptedException e) {}
+    });
   }
 
-  static void producer(int n) {
-    new Thread(() -> {
-      try {
-      while(true) {
-        produce(n);
-        Thread.sleep(random());
-      }
-      }
-      catch(InterruptedException e) {}
-    }).start();
-  }
-
-  static void consumer(int n) {
-    new Thread(() -> {
-      try {
-      while(true) {
-        consume(n);
-        Thread.sleep(random());
-      }
-      }
-      catch(InterruptedException e) {}
-    }).start();
-  }
 
   // 1. Start N producers and consumers.
   public static void main(String[] args) {
+    log(N+" producers and "+N+" consumers ...");
     items = new int[] {0};
     for(int i=1; i<=N; i++) {
-      producer(i);
-      consumer(i);
+      producer(i).start();
+      consumer(i).start();
     }
   }
-  static long random() {
-    return (long) (Math.random()*1000);
+  
+
+  static void sleep() {
+    sleep(1000 * Math.random());
   }
+
+  static void sleep(double t) {
+    try { Thread.sleep((long)t); }
+    catch (InterruptedException e) {}
+  }
+
   static void log(String x) {
     System.out.println(x);
   }
