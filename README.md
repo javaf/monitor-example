@@ -16,6 +16,12 @@ consumers that produce/consume 1-4 items at a
 time. If there are insufficient items for a
 consumer, it waits until they are available.
 
+> **Course**: [Concurrent Data Structures], Monsoon 2020<br>
+> **Taught by**: Prof. Govindarajulu Regeti
+<br>
+
+[Concurrent Data Structures]: https://github.com/iiithf/concurrent-data-structures
+
 ```java
 producer(n):
 1. Lock on items
