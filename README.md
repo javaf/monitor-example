@@ -98,3 +98,5 @@ See [Main.java] for code, and [repl.it] for output.
 
 - [Synchronization 2: Monitors and Condition Variables :: Jacob Schrum](https://www.youtube.com/watch?v=15Q8PILXkQ0)
 - [Java.lang.Object.wait() Method](https://www.tutorialspoint.com/java/lang/object_wait.htm)
+
+![](https://ga-beacon.deno.dev/G-G1E8HNDZYY:v51jklKGTLmC3LAZ4rJbIQ/github.com/javaf/monitor-example)
