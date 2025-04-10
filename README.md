@@ -100,3 +100,4 @@ See [Main.java] for code, and [repl.it] for output.
 - [Java.lang.Object.wait() Method](https://www.tutorialspoint.com/java/lang/object_wait.htm)
 
 ![](https://ga-beacon.deno.dev/G-G1E8HNDZYY:v51jklKGTLmC3LAZ4rJbIQ/github.com/javaf/monitor-example)
+![](https://ga-beacon.deno.dev/G-G1E8HNDZYY:v51jklKGTLmC3LAZ4rJbIQ/github.com/moocf/monitor-example.java)
